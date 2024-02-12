@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdlowv8hmrxtd"]
+
+[ext_resource type="Theme" uid="uid://bas1oqw84cj4o" path="res://grid.tres" id="1_a5t61"]
+[ext_resource type="Script" path="res://LogicGrid.gd" id="2_xsvnr"]
+
+[node name="Control" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("1_a5t61")
+columns = 2
+script = ExtResource("2_xsvnr")
+num_rows = 20
+num_cols = 20
+
+[node name="Timer" type="Timer" parent="GridContainer"]
+wait_time = 0.1
+
+[connection signal="timeout" from="GridContainer/Timer" to="GridContainer" method="_on_timer_timeout"]
