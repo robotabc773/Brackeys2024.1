@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bawse0x2a8v0b"]
 
 [ext_resource type="Texture2D" uid="uid://6pbgru47ympg" path="res://tile_empty.tres" id="1_03xc4"]
-[ext_resource type="Script" path="res://tile.gd" id="2_ti2yx"]
+[ext_resource type="Script" path="res://Tile.gd" id="2_ti2yx"]
 
 [node name="Tile" type="TextureRect"]
 texture = ExtResource("1_03xc4")
