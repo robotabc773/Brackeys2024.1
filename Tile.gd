@@ -17,16 +17,16 @@ func _ready():
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and hovered:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			turn_dark()
+			toggle_dark()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			turn_light()
+			toggle_light()
 
 func _on_mouse_entered():
 	hovered = true
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		turn_dark()
+		toggle_dark()
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		turn_light()
+		toggle_light()
 
 func _on_mouse_exited():
 	hovered = false
@@ -38,7 +38,17 @@ func turn_empty():
 func turn_dark():
 	texture = dark_tex
 	state = TileState.DARK
+func toggle_dark():
+	if state == TileState.DARK:
+		turn_empty()
+	else:
+		turn_dark()
 
 func turn_light():
 	texture = light_tex
 	state = TileState.LIGHT
+func toggle_light():
+	if state == TileState.LIGHT:
+		turn_empty()
+	else:
+		turn_light()
