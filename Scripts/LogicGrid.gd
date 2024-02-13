@@ -47,15 +47,27 @@ func _ready():
 		# Get notified when the mouse hovers over the tile, with the tile's position
 		tile.mouse_entered.connect(_tile_mouse_entered.bind(display_grid.index_to_pos(i)))
 
+# Adds a position to the tool path, backtracking if we've already visited it
+func _add_pos_to_tool_path(pos : Vector2i) -> void:
+	var existing_index = tool_path.find(pos)
+	if existing_index != -1:
+		# We've gone backwards
+		tool_path.resize(existing_index + 1)
+	else:
+		tool_path.append(pos)
+
 ## Called when the mouse moves over a new tile
 func _tile_mouse_entered(pos : Vector2i) -> void:
 	if tool_in_progress:
-		var existing_index = tool_path.find(pos)
-		if existing_index != -1:
-			# We've gone backwards
-			tool_path.resize(existing_index + 1)
-		else:
-			tool_path.append(pos)
+		var old_pos = tool_path[-1]
+		while old_pos != pos:
+			var delta = pos - old_pos
+			if absi(delta.x) > absi(delta.y):
+				old_pos.x += signi(delta.x)
+			else:
+				old_pos.y += signi(delta.y)
+			_add_pos_to_tool_path(old_pos)
+		_add_pos_to_tool_path(pos)
 	hovered_tile = pos
 
 ## Handles mouse input for starting and finishing tools
