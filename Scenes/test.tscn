@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdlowv8hmrxtd"]
 
 [ext_resource type="Theme" uid="uid://bas1oqw84cj4o" path="res://grid.tres" id="1_sv077"]
-[ext_resource type="Script" path="res://Scripts/LogicGrid.gd" id="2_535ix"]
+[ext_resource type="Script" path="res://Scripts/logic_grid.gd" id="2_535ix"]
 
 [node name="Control" type="PanelContainer"]
 anchors_preset = 15

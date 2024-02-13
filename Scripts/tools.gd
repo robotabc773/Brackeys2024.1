@@ -1,5 +1,6 @@
-extends Object
 class_name Tools
+extends Object
+
 
 ## Possible results of tool application
 enum Result {
@@ -8,8 +9,9 @@ enum Result {
 	## Invalid use, but still useful to show, may modify the grid
 	PREVIEW_ONLY, 
 	## Valid use, may modify the grid
-	SUCCESS
+	SUCCESS,
 }
+
 
 ## Base class for a tool, shouldn't be used directly
 class Tool:
@@ -18,21 +20,25 @@ class Tool:
 		assert(false, "Unimplemented")
 		return false
 	
+	
 	## Apply the tool to the grid, returning the relevant [enum Tools.Result]
 	func apply(_grid : Grid, _path : Array[Vector2i]) -> Result:
 		assert(false, "Unimplemented")
 		return Result.FAILURE
+
 
 class ToolTest extends Tool:
 	## Should return true iff the given position is valid to start the tool at
 	func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 		return true
 	
+	
 	## Apply the tool to the grid, returning the relevant [enum Tools.Result]
 	func apply(grid : Grid, path : Array[Vector2i]) -> Result:
-		for pos in path:
+		for pos : Vector2i in path:
 			grid.set_state(pos, Tile.State.DARK)
 		return Result.SUCCESS
+
 
 ## [Tool] that draws an unfilled rectangle of dark squares.
 ## The corners must be light and the start and end row and column must both be different
@@ -41,25 +47,30 @@ class ToolA extends Tool:
 	func valid_start_pos(grid : Grid, pos : Vector2i) -> bool:
 		return grid.get_state(pos) == Tile.State.LIGHT
 	
+	
 	## Draws the unfilled rectangle
 	## Returns PREVIEW_ONLY if one of the corners isn't light 
 	## or the start and end row or column are the same
 	## Returns SUCCESS otherwise
 	func apply(grid : Grid, path : Array[Vector2i]) -> Result:
-		var start_pos = path[0]
-		var end_pos = path[-1]
-		var result = Result.SUCCESS
-		if grid.get_state(end_pos) == Tile.State.DARK or \
-			grid.get_state(Vector2i(start_pos.x, end_pos.y)) == Tile.State.DARK or \
-			grid.get_state(Vector2i(end_pos.x, start_pos.y)) == Tile.State.DARK:
+		var start_pos := path[0]
+		var end_pos := path[-1]
+		var result := Result.SUCCESS
+		if (
+				# Check if any corners are dark 
+				# (don't need to check start_pos because valid_start_pos handles that)
+				grid.get_state(end_pos) == Tile.State.DARK
+				or grid.get_state(Vector2i(start_pos.x, end_pos.y)) == Tile.State.DARK
+				or grid.get_state(Vector2i(end_pos.x, start_pos.y)) == Tile.State.DARK
+				# Check that start and end row and column are different
+				or start_pos.x == end_pos.x or start_pos.y == end_pos.y
+		):
 			result = Result.PREVIEW_ONLY
-		if start_pos.x == end_pos.x or start_pos.y == end_pos.y:
-			result = Result.PREVIEW_ONLY
-		
-		var low_x = min(start_pos.x, end_pos.x)
-		var high_x = max(start_pos.x, end_pos.x)
-		var low_y = min(start_pos.y, end_pos.y)
-		var high_y = max(start_pos.y, end_pos.y)
+			
+		var low_x := mini(start_pos.x, end_pos.x)
+		var high_x := maxi(start_pos.x, end_pos.x)
+		var low_y := mini(start_pos.y, end_pos.y)
+		var high_y := maxi(start_pos.y, end_pos.y)
 		
 		for x in range(low_x, high_x + 1):
 			grid.set_state(Vector2i(x, start_pos.y), Tile.State.DARK)

@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://bawse0x2a8v0b"]
 
 [ext_resource type="Texture2D" uid="uid://6pbgru47ympg" path="res://Sprites/tile_empty.tres" id="1_tpncd"]
-[ext_resource type="Script" path="res://Scripts/Tile.gd" id="2_eir3e"]
+[ext_resource type="Script" path="res://Scripts/tile.gd" id="2_isat2"]
 
 [node name="Tile" type="TextureRect"]
 texture = ExtResource("1_tpncd")
-script = ExtResource("2_eir3e")
+script = ExtResource("2_isat2")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
