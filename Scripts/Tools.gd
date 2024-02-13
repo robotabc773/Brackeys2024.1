@@ -14,23 +14,22 @@ enum Result {
 ## Base class for a tool, shouldn't be used directly
 class Tool:
 	## Should return true iff the given position is valid to start the tool at
-	func valid_start_pos(grid : Grid, pos : Vector2i) -> bool:
+	func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 		assert(false, "Unimplemented")
 		return false
 	
 	## Apply the tool to the grid, returning the relevant [enum Tools.Result]
-	func apply(grid : Grid, path : Array[Vector2i]) -> Result:
+	func apply(_grid : Grid, _path : Array[Vector2i]) -> Result:
 		assert(false, "Unimplemented")
 		return Result.FAILURE
 
 class ToolTest extends Tool:
 	## Should return true iff the given position is valid to start the tool at
-	func valid_start_pos(grid : Grid, pos : Vector2i) -> bool:
+	func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 		return true
 	
 	## Apply the tool to the grid, returning the relevant [enum Tools.Result]
 	func apply(grid : Grid, path : Array[Vector2i]) -> Result:
-		print(path)
 		for pos in path:
 			grid.set_state(pos, Tile.State.DARK)
 		return Result.SUCCESS

@@ -46,7 +46,6 @@ func _ready():
 		tile.state = Tile.State.LIGHT
 		# Get notified when the mouse hovers over the tile, with the tile's position
 		tile.mouse_entered.connect(_tile_mouse_entered.bind(display_grid.index_to_pos(i)))
-		tile.mouse_exited.connect(_tile_mouse_exited.bind(display_grid.index_to_pos(i)))
 
 ## Called when the mouse moves over a new tile
 func _tile_mouse_entered(pos : Vector2i) -> void:
@@ -58,12 +57,6 @@ func _tile_mouse_entered(pos : Vector2i) -> void:
 		else:
 			tool_path.append(pos)
 	hovered_tile = pos
-
-## Called when the mouse moves away from a tile
-func _tile_mouse_exited(pos : Vector2i) -> void:
-	#if tool_in_progress:
-		#tool_path.append(pos)
-	pass
 
 ## Handles mouse input for starting and finishing tools
 func _gui_input(event):
