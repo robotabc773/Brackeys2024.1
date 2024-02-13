@@ -1,6 +1,6 @@
 extends GridContainer
 
-const tile_template = preload("res://tile.tscn")
+const tile_template = preload("res://Objects/tile.tscn")
 
 @export_range(0, 20) var num_rows = 4
 @export_range(0, 20) var num_cols = 4
@@ -86,7 +86,4 @@ func conway():
 			else:
 				new_states.append(Tile.TileState.DARK)
 	for i in range(len(tiles)):
-		if new_states[i] == Tile.TileState.DARK:
-			tiles[i].turn_dark()
-		else:
-			tiles[i].turn_empty()
+		tiles[i].state = new_states[i]

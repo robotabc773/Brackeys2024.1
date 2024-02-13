@@ -3,18 +3,26 @@ class_name Tile
 
 enum TileState {EMPTY, LIGHT, DARK}
 
-const empty_tex = preload("res://tile_empty.tres")
-const dark_tex = preload("res://tile_dark.tres")
-const light_tex = preload("res://tile_light.tres")
+const empty_tex = preload("res://Sprites/tile_empty.tres")
+const dark_tex = preload("res://Sprites/tile_dark.tres")
+const light_tex = preload("res://Sprites/tile_light.tres")
 
 static var initial_click_state : TileState
 
 var hovered = false
-var state : TileState
+var state : TileState:
+	set(value):
+		if value == TileState.EMPTY:
+			texture = empty_tex
+		elif value == TileState.LIGHT:
+			texture = light_tex
+		else:
+			texture = dark_tex
+		state = value
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	turn_empty()
+	state = TileState.EMPTY
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and hovered:
@@ -34,28 +42,18 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	hovered = false
 
-func turn_empty():
-	texture = empty_tex
-	state = TileState.EMPTY
-
-func turn_dark():
-	texture = dark_tex
-	state = TileState.DARK
 func handle_dark_input():
 	if state == TileState.DARK:
 		if initial_click_state == TileState.DARK:
-			turn_empty()
+			state = TileState.EMPTY
 	else:
 		if initial_click_state != TileState.DARK:
-			turn_dark()
+			state = TileState.DARK
 
-func turn_light():
-	texture = light_tex
-	state = TileState.LIGHT
 func handle_light_input():
 	if state == TileState.LIGHT:
 		if initial_click_state == TileState.LIGHT:
-			turn_empty()
+			state = TileState.EMPTY
 	else:
 		if initial_click_state != TileState.LIGHT:
-			turn_light()
+			state = TileState.LIGHT

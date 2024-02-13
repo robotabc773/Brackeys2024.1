@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdlowv8hmrxtd"]
 
-[ext_resource type="Theme" uid="uid://bas1oqw84cj4o" path="res://grid.tres" id="1_a5t61"]
-[ext_resource type="Script" path="res://LogicGrid.gd" id="2_xsvnr"]
+[ext_resource type="Theme" uid="uid://bas1oqw84cj4o" path="res://grid.tres" id="1_sv077"]
+[ext_resource type="Script" path="res://Scripts/LogicGrid.gd" id="2_535ix"]
 
 [node name="Control" type="PanelContainer"]
 anchors_preset = 15
@@ -12,9 +12,9 @@ grow_vertical = 2
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
-theme = ExtResource("1_a5t61")
+theme = ExtResource("1_sv077")
 columns = 2
-script = ExtResource("2_xsvnr")
+script = ExtResource("2_535ix")
 num_rows = 20
 num_cols = 20
 
