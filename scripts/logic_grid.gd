@@ -130,10 +130,11 @@ func resize() -> void:
 	for tile in _tiles:
 		tile.queue_free()
 	
-	# Re-instantiate tiles
+	# Instantiate tiles
 	_tiles = []
 	for i in range(num_rows * num_cols):
 		var tile : Tile = _tile_template.instantiate()
+		#var tile : Tile = preload("res://scripts/tile.gd").new()
 		add_child(tile)
 		_tiles.append(tile)
 		tile.state = _display_grid.get_state(_display_grid.index_to_pos(i))

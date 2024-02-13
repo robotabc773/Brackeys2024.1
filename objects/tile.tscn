@@ -4,7 +4,13 @@
 [ext_resource type="Script" path="res://scripts/tile.gd" id="2_1x3sg"]
 
 [node name="Tile" type="TextureRect"]
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource("1_3daci")
+expand_mode = 1
+stretch_mode = 5
 script = ExtResource("2_1x3sg")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

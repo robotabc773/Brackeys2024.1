@@ -1,4 +1,4 @@
-extends Control
+extends AspectRatioContainer
 
 
 const LogicGrid = preload("res://scripts/logic_grid.gd")
@@ -7,6 +7,10 @@ const LogicGrid = preload("res://scripts/logic_grid.gd")
 
 func _ready() -> void:
 	grid.current_tool = preload("res://scripts/tools/tool_editor.gd").new()
+
+
+func _process(_delta: float) -> void:
+	ratio = float(grid.num_cols) / (grid.num_rows)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
