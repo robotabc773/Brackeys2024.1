@@ -23,6 +23,18 @@ class Tool:
 		assert(false, "Unimplemented")
 		return Result.FAILURE
 
+class ToolTest extends Tool:
+	## Should return true iff the given position is valid to start the tool at
+	func valid_start_pos(grid : Grid, pos : Vector2i) -> bool:
+		return true
+	
+	## Apply the tool to the grid, returning the relevant [enum Tools.Result]
+	func apply(grid : Grid, path : Array[Vector2i]) -> Result:
+		print(path)
+		for pos in path:
+			grid.set_state(pos, Tile.State.DARK)
+		return Result.SUCCESS
+
 ## [Tool] that draws an unfilled rectangle of dark squares.
 ## The corners must be light and the start and end row and column must both be different
 class ToolA extends Tool:

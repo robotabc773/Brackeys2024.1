@@ -16,6 +16,17 @@ var display_grid : Grid
 ## Position of the tile the mouse is currently over
 var hovered_tile : Vector2i
 
+## Current tool instance
+var current_tool : Tools.Tool = Tools.ToolTest.new()
+## Whether there is currenty a tool in the process of being used
+var tool_in_progress : bool
+## Position the tool started in
+var tool_start_pos : Vector2i
+## Copy of the grid from before the current tool started being used
+var tool_initial_grid : Grid
+## Path the mouse has taken over the course of the current tool
+var tool_path : Array[Vector2i]
+
 ## Called on start
 ## Initializes tiles and display_grid
 func _ready():
@@ -35,19 +46,25 @@ func _ready():
 		tile.state = Tile.State.LIGHT
 		# Get notified when the mouse hovers over the tile, with the tile's position
 		tile.mouse_entered.connect(_tile_mouse_entered.bind(display_grid.index_to_pos(i)))
+		tile.mouse_exited.connect(_tile_mouse_exited.bind(display_grid.index_to_pos(i)))
 
 ## Called when the mouse moves over a new tile
 func _tile_mouse_entered(pos : Vector2i) -> void:
+	if tool_in_progress:
+		var existing_index = tool_path.find(pos)
+		if existing_index != -1:
+			# We've gone backwards
+			tool_path.resize(existing_index + 1)
+		else:
+			tool_path.append(pos)
 	hovered_tile = pos
 
-## Current tool instance
-var current_tool : Tools.Tool = Tools.ToolA.new()
-## Whether there is currenty a tool in the process of being used
-var tool_in_progress : bool
-## Position the tool started in
-var tool_start_pos : Vector2i
-## Copy of the grid from before the current tool started being used
-var tool_initial_grid : Grid
+## Called when the mouse moves away from a tile
+func _tile_mouse_exited(pos : Vector2i) -> void:
+	#if tool_in_progress:
+		#tool_path.append(pos)
+	pass
+
 ## Handles mouse input for starting and finishing tools
 func _gui_input(event):
 	if not event is InputEventMouseButton:
@@ -59,12 +76,13 @@ func _gui_input(event):
 		tool_in_progress = true
 		tool_start_pos = hovered_tile
 		tool_initial_grid = display_grid.copy()
+		tool_path = [hovered_tile]
 	else:
 		# Mouse was released, finish the tool if it is in progress
 		if not tool_in_progress:
 			return
 		var tool_final_grid = tool_initial_grid.copy()
-		var result = current_tool.apply(tool_final_grid, [tool_start_pos, hovered_tile])
+		var result = current_tool.apply(tool_final_grid, tool_path)
 		if result == Tools.Result.SUCCESS:
 			display_grid = tool_final_grid
 		else:
@@ -76,7 +94,7 @@ func _process(_delta):
 	# Update tool preview
 	if tool_in_progress:
 		var preview_grid = tool_initial_grid.copy()
-		var result = current_tool.apply(preview_grid, [tool_start_pos, hovered_tile])
+		var result = current_tool.apply(preview_grid, tool_path)
 		if result != Tools.Result.FAILURE:
 			display_grid = preview_grid
 		
