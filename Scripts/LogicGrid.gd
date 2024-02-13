@@ -1,4 +1,5 @@
 extends GridContainer
+class_name LogicGrid
 
 const tile_template = preload("res://Objects/tile.tscn")
 
@@ -6,28 +7,52 @@ const tile_template = preload("res://Objects/tile.tscn")
 @export_range(0, 20) var num_cols = 4
 
 var tiles: Array[Tile]
+var display_grid : Grid
+var hovered_tile : Vector2i
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	columns = num_cols
+	var states: Array[Tile.State] = []
+	states.resize(num_rows * num_cols)
+	states.fill(Tile.State.LIGHT)
+	display_grid = Grid.new(num_rows, num_cols, states)
 	for i in range(num_rows * num_cols):
 		var tile = tile_template.instantiate()
 		add_child(tile)
 		tiles.append(tile)
+		tile.state = Tile.State.LIGHT
+		tile.mouse_entered.connect(_tile_mouse_entered.bind(display_grid.index_to_pos(i)))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	var empty = 0
-	var light = 0
-	var dark = 0
-	for tile in tiles:
-		if tile.state == Tile.TileState.EMPTY:
-			empty += 1
-		elif tile.state == Tile.TileState.LIGHT:
-			light += 1
+func _tile_mouse_entered(pos : Vector2i) -> void:
+	hovered_tile = pos
+
+var current_tool : Tools.Tool = Tools.ToolA.new()
+var tool_in_progress : bool
+var tool_start_pos : Vector2i
+var tool_initial_grid : Grid
+func _gui_input(event):
+	if not event is InputEventMouseButton:
+		return
+	if event.pressed:
+		tool_in_progress = true
+		tool_start_pos = hovered_tile
+		tool_initial_grid = display_grid.copy()
+	else:
+		var tool_final_grid = tool_initial_grid.copy()
+		var result = current_tool.apply(tool_final_grid, [tool_start_pos, hovered_tile])
+		if result == Tools.Result.SUCCESS:
+			display_grid = tool_final_grid
 		else:
-			dark += 1
-	print("empty: %d light: %d dark: %d" % [empty, light, dark])
+			display_grid = tool_initial_grid
+		tool_in_progress = false
+
+func _process(_delta):
+	if tool_in_progress:
+		display_grid = tool_initial_grid.copy()
+		current_tool.apply(display_grid, [tool_start_pos, hovered_tile])
+	for i in tiles.size():
+		tiles[i].state = display_grid.states[i]
 
 var running = false
 
@@ -44,46 +69,24 @@ func _unhandled_key_input(event):
 	
 func _on_timer_timeout():
 	conway()
-	
-func neighbors(pos : int):
-	@warning_ignore("integer_division")
-	var row : int = pos / num_cols
-	var col : int = pos % num_cols
-	var res : Array[int] = []
-	if row > 0:
-		res.append(pos - num_cols)
-	if row < num_rows - 1:
-		res.append(pos + num_cols)
-	if col > 0:
-		res.append(pos - 1)
-	if col < num_cols - 1:
-		res.append(pos + 1)
-	if row > 0 and col > 0:
-		res.append(pos - num_cols - 1)
-	if row > 0 and col < num_cols - 1:
-		res.append(pos - num_cols + 1)
-	if row < num_rows - 1 and col > 0:
-		res.append(pos + num_cols - 1)
-	if row < num_rows - 1 and col < num_cols - 1:
-		res.append(pos + num_cols + 1)
-	return res
 
 func conway():
-	var new_states: Array[Tile.TileState] = []
-	for i in range(len(tiles)):
-		var living_neighbors = 0 
-		for neighbor_pos in neighbors(i):
-			if tiles[neighbor_pos].state == Tile.TileState.DARK:
-				living_neighbors += 1
-		if tiles[i].state == Tile.TileState.EMPTY:
-			if living_neighbors == 3:
-				new_states.append(Tile.TileState.DARK)
+	var updated_grid = display_grid.copy()
+	for col in num_cols:
+		for row in num_rows:
+			var pos = Vector2i(col, row)
+			var living_neighbors = 0 
+			for neighbor_pos in display_grid.neighbors8(pos):
+				if display_grid.get_state(neighbor_pos) == Tile.State.DARK:
+					living_neighbors += 1
+			if display_grid.get_state(pos) == Tile.State.LIGHT:
+				if living_neighbors == 3:
+					updated_grid.set_state(pos, Tile.State.DARK)
+				else:
+					updated_grid.set_state(pos, Tile.State.LIGHT)
 			else:
-				new_states.append(Tile.TileState.EMPTY)
-		else:
-			if living_neighbors < 2 or living_neighbors > 3:
-				new_states.append(Tile.TileState.EMPTY)
-			else:
-				new_states.append(Tile.TileState.DARK)
-	for i in range(len(tiles)):
-		tiles[i].state = new_states[i]
+				if living_neighbors < 2 or living_neighbors > 3:
+					updated_grid.set_state(pos, Tile.State.LIGHT)
+				else:
+					updated_grid.set_state(pos, Tile.State.DARK)
+	display_grid = updated_grid
