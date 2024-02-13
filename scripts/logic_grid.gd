@@ -1,7 +1,7 @@
-class_name LogicGrid
 extends GridContainer
 
-## Tile object that will be instantiated across the grid
+
+# Tile object that will be instantiated across the grid
 const _tile_template = preload("res://objects/tile.tscn")
 
 ## Number of rows in the grid
@@ -10,7 +10,7 @@ const _tile_template = preload("res://objects/tile.tscn")
 @export_range(0, 20) var num_cols : int = 4
 
 ## Current tool instance
-var current_tool : Tools.Tool = Tools.ToolA.new()
+var current_tool : Tool = preload("res://scripts/tools/tool_b.gd").new()
 
 # Internal array of tiles, generally do not update directly
 var _tiles: Array[Tile]
@@ -91,7 +91,7 @@ func _gui_input(event : InputEvent) -> void:
 			return
 		var tool_final_grid := _tool_initial_grid.copy()
 		var result := current_tool.apply(tool_final_grid, _tool_path)
-		if result == Tools.Result.SUCCESS:
+		if result == Tool.Result.SUCCESS:
 			_display_grid = tool_final_grid
 		else:
 			_display_grid = _tool_initial_grid
@@ -104,7 +104,7 @@ func _process(_delta : float) -> void:
 	if _tool_in_progress:
 		var preview_grid := _tool_initial_grid.copy()
 		var result := current_tool.apply(preview_grid, _tool_path)
-		if result != Tools.Result.FAILURE:
+		if result != Tool.Result.FAILURE:
 			_display_grid = preview_grid
 		
 	# Actually display the states in _display_grid
