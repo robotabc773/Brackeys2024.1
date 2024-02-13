@@ -14,8 +14,8 @@ static func invert(s : State) -> State:
 
 
 #const empty_tex = preload("res://Sprites/tile_empty.tres")
-const dark_tex : Texture = preload("res://Sprites/tile_dark.tres")
-const light_tex : Texture = preload("res://Sprites/tile_light.tres")
+const dark_tex : Texture = preload("res://sprites/tile_dark.tres")
+const light_tex : Texture = preload("res://sprites/tile_light.tres")
 
 
 ## The current state of the tile, setting also changes the texture

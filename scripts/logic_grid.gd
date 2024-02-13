@@ -2,7 +2,7 @@ class_name LogicGrid
 extends GridContainer
 
 ## Tile object that will be instantiated across the grid
-const _tile_template = preload("res://Objects/tile.tscn")
+const _tile_template = preload("res://objects/tile.tscn")
 
 ## Number of rows in the grid
 @export_range(0, 20) var num_rows : int = 4

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cykf831bv2p67"]
 
-[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_aipl4"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_spu3b"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -27,7 +27,7 @@ offset_bottom = 649.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-script = ExtResource("1_aipl4")
+script = ExtResource("1_spu3b")
 
 [node name="Play" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
