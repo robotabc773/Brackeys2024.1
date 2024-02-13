@@ -1,16 +1,28 @@
 extends GridContainer
 
-
 # Tile object that will be instantiated across the grid
 const _tile_template = preload("res://objects/tile.tscn")
 
 ## Number of rows in the grid
-@export_range(0, 20) var num_rows : int = 4
+@export_range(0, 20) var num_rows : int = 4:
+	set(value):
+		if value < 1:
+			return
+		num_rows = value
+		resize()
 ## Number of columns in the grid
-@export_range(0, 20) var num_cols : int = 4
+@export_range(0, 20) var num_cols : int = 4:
+	set(value):
+		if value < 1:
+			return
+		num_cols = value
+		resize()
 
 ## Current tool instance
-var current_tool : Tool = preload("res://scripts/tools/tool_b.gd").new()
+var current_tool : Tool = preload("res://scripts/tools/tool_test.gd").new():
+	set(value):
+		cancel_tool()
+		current_tool = value
 
 # Internal array of tiles, generally do not update directly
 var _tiles: Array[Tile]
@@ -26,26 +38,15 @@ var _tool_initial_grid : Grid
 # Path the mouse has taken over the course of the current tool
 var _tool_path : Array[Vector2i]
 
+# Stack of previous grids for undo to use
+var _undo_history : Array[UndoState]
 
 # Called on start
-# Initializes _tiles and _display_grid
 func _ready() -> void:
-	columns = num_cols
-	
-	# Initialize _display_grid
-	var states: Array[Tile.State] = []
-	states.resize(num_rows * num_cols)
-	states.fill(Tile.State.LIGHT)
-	_display_grid = Grid.new(num_rows, num_cols, states)
-	
-	# Instantiate tiles
-	for i in range(num_rows * num_cols):
-		var tile : Tile = _tile_template.instantiate()
-		add_child(tile)
-		_tiles.append(tile)
-		tile.state = Tile.State.LIGHT
-		# Get notified when the mouse hovers over the tile, with the tile's position
-		tile.mouse_entered.connect(_tile_mouse_entered.bind(_display_grid.index_to_pos(i)))
+	# Ensure the grid exists
+	resize()
+	# Save the initial state as the earliest state to undo to
+	_undo_history = [UndoState.new(_display_grid)]
 
 
 # Adds a position to the tool path, backtracking if we've already visited it
@@ -61,6 +62,7 @@ func _add_pos_to_tool_path(pos : Vector2i) -> void:
 # Called when the mouse moves over a new tile
 func _tile_mouse_entered(pos : Vector2i) -> void:
 	if _tool_in_progress:
+		# Step towards pos incrementally to ensure only orthogonal movements
 		var old_pos := _tool_path[-1]
 		while old_pos != pos:
 			var delta := pos - old_pos
@@ -78,24 +80,16 @@ func _gui_input(event : InputEvent) -> void:
 	if not event is InputEventMouseButton:
 		return
 	var mouse_event : InputEventMouseButton = event
-	if mouse_event.pressed:
-		# Mouse was pressed, start the tool if valid
-		if not current_tool.valid_start_pos(_display_grid, _hovered_tile):
-			return
-		_tool_in_progress = true
-		_tool_initial_grid = _display_grid.copy()
-		_tool_path = [_hovered_tile]
-	else:
-		# Mouse was released, finish the tool if it is in progress
-		if not _tool_in_progress:
-			return
-		var tool_final_grid := _tool_initial_grid.copy()
-		var result := current_tool.apply(tool_final_grid, _tool_path)
-		if result == Tool.Result.SUCCESS:
-			_display_grid = tool_final_grid
+	if mouse_event.button_index == MOUSE_BUTTON_LEFT:
+		if mouse_event.pressed:
+			# Mouse was pressed, start the tool if valid
+			_start_tool()
 		else:
-			_display_grid = _tool_initial_grid
-		_tool_in_progress = false
+			# Mouse was released, finish the tool
+			_end_tool()
+	elif mouse_event.button_index == MOUSE_BUTTON_RIGHT and mouse_event.pressed:
+		# Undo on right-click
+		_undo()
 
 
 # Called every frame
@@ -110,3 +104,98 @@ func _process(_delta : float) -> void:
 	# Actually display the states in _display_grid
 	for i in _tiles.size():
 		_tiles[i].state = _display_grid.get_state(_display_grid.index_to_pos(i))
+
+
+# Resizes/creates the grid
+func resize() -> void:
+	columns = num_cols
+	
+	# Create new _display_grid
+	var states: Array[Tile.State] = []
+	states.resize(num_rows * num_cols)
+	states.fill(Tile.State.LIGHT)
+	var new_display_grid := Grid.new(num_rows, num_cols, states)
+	
+	# Copy over old _display_grid
+	if _display_grid:
+		for row in num_rows:
+			for col in num_cols:
+				var pos := Vector2i(col, row)
+				if _display_grid.valid_pos(pos):
+					new_display_grid.set_state(pos, _display_grid.get_state(pos))
+	
+	_display_grid = new_display_grid
+	
+	# Destroy old tiles
+	for tile in _tiles:
+		tile.queue_free()
+	
+	# Re-instantiate tiles
+	_tiles = []
+	for i in range(num_rows * num_cols):
+		var tile : Tile = _tile_template.instantiate()
+		add_child(tile)
+		_tiles.append(tile)
+		tile.state = _display_grid.get_state(_display_grid.index_to_pos(i))
+		# Get notified when the mouse hovers over the tile, with the tile's position
+		tile.mouse_entered.connect(_tile_mouse_entered.bind(_display_grid.index_to_pos(i)))
+
+
+# Start the current tool
+func _start_tool() -> void:
+	if not current_tool.valid_start_pos(_display_grid, _hovered_tile):
+		return
+	_tool_in_progress = true
+	_tool_initial_grid = _display_grid.copy()
+	_tool_path = [_hovered_tile]
+
+
+# End the current tool, committing its results if they are valid
+func _end_tool() -> void:
+	if not _tool_in_progress:
+		return
+		
+	var tool_final_grid := _tool_initial_grid.copy()
+	var result := current_tool.apply(tool_final_grid, _tool_path)
+	if result == Tool.Result.SUCCESS:
+		_display_grid = tool_final_grid
+		_undo_history.append(UndoState.new(_tool_initial_grid))
+	else:
+		_display_grid = _tool_initial_grid
+		
+	_tool_in_progress = false
+	
+
+# Cancel the current tool, always discarding the current results
+func cancel_tool() -> void:
+	if not _tool_in_progress:
+		return
+	_display_grid = _tool_initial_grid
+	_tool_in_progress = false
+
+
+class UndoState:
+	var grid : Grid
+	
+	func _init(g : Grid) -> void:
+		grid = g
+
+
+# Undo the last successful move
+func _undo() -> void:
+	# Don't allow undos midway through a tool
+	if _tool_in_progress:
+		return
+	# There needs to actually be something to undo (other than the initial state)
+	if _undo_history.size() <= 1:
+		return
+	
+	# Get the last state in the history
+	var state : UndoState = _undo_history[-1]
+	# Remove the obtained state
+	_undo_history.resize(_undo_history.size() - 1)
+	
+	# Restore the state
+	_display_grid = state.grid
+
+

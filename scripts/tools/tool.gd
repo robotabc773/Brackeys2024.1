@@ -1,5 +1,5 @@
 class_name Tool
-extends Object
+extends Resource
 ## Base class for a tool, shouldn't be used directly
 
 ## Possible results of tool application
