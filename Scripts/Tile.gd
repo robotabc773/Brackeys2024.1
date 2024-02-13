@@ -1,5 +1,6 @@
 extends TextureRect
 class_name Tile
+## Draws a single tile
 
 enum State {LIGHT, DARK}
 
