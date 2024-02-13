@@ -35,10 +35,14 @@ func _gui_input(event):
 	if not event is InputEventMouseButton:
 		return
 	if event.pressed:
+		if not current_tool.valid_start_pos(display_grid, hovered_tile):
+			return
 		tool_in_progress = true
 		tool_start_pos = hovered_tile
 		tool_initial_grid = display_grid.copy()
 	else:
+		if not tool_in_progress:
+			return
 		var tool_final_grid = tool_initial_grid.copy()
 		var result = current_tool.apply(tool_final_grid, [tool_start_pos, hovered_tile])
 		if result == Tools.Result.SUCCESS:
