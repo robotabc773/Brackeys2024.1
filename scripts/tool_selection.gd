@@ -1,16 +1,17 @@
 extends Control
 
-var logic_grid = preload("res://scripts/logic_grid.gd").new()
+# Assumes that LogicGrid is a sister node
+@onready var logic_grid : LogicGrid = $"../LogicGrid"
+
+const tool_test = preload("res://scripts/tools/tool_test.gd")
+const tool_a = preload("res://scripts/tools/tool_a.gd")
+const tool_b = preload("res://scripts/tools/tool_b.gd")
 
 func _on_tool_1_pressed():
-	logic_grid.switch_tools("res://scripts/tools/tool_a.gd")
-
-
+	logic_grid.current_tool = tool_a.new()
 
 func _on_tool_2_pressed():
-	logic_grid.switch_tools("res://scripts/tools/tool_b.gd")
-
-
-
+	logic_grid.current_tool = tool_b.new()
+	
 func _on_tool_3_pressed():
-	pass # Replace with function body.
+	logic_grid.current_tool = tool_test.new()

@@ -1,3 +1,4 @@
+class_name LogicGrid
 extends GridContainer
 
 # Tile object that will be instantiated across the grid
@@ -48,20 +49,6 @@ func _ready() -> void:
 	# Save the initial state as the earliest state to undo to
 	_undo_history = [UndoState.new(_display_grid)]
 
-# A functionto switch tools
-func switch_tool(tool_path : String) -> void:
-	# Load the script
-	var new_tool_script = load(tool_path)
-	if new_tool_script:
-		# Create a new instance of the script
-		var new_tool = new_tool_script.new()
-		if new_tool is Tool:
-			cancel_tool()
-			current_tool = new_tool
-		else:
-			print("Error: The script does not extend Tool")
-	else:
-		print("Error: Failed to load the script")
 
 # Adds a position to the tool path, backtracking if we've already visited it
 func _add_pos_to_tool_path(pos : Vector2i) -> void:
