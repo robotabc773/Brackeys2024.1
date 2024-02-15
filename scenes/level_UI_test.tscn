@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cby75who253kt"]
+[gd_scene load_steps=3 format=3 uid="uid://cby75who253kt"]
 
 [ext_resource type="PackedScene" uid="uid://br6dyud2sumq5" path="res://scenes/pause_menu.tscn" id="1_58iq7"]
+[ext_resource type="PackedScene" uid="uid://dl6eyt6o4vcnb" path="res://scenes/tool_selection.tscn" id="2_oghex"]
 
 [node name="LevelUiTest" type="Node2D"]
 
@@ -9,3 +10,9 @@ offset_left = 16.0
 offset_top = 9.0
 offset_right = 16.0
 offset_bottom = 9.0
+
+[node name="ToolSelection" parent="." instance=ExtResource("2_oghex")]
+offset_left = -16.0
+offset_top = 203.0
+offset_right = -16.0
+offset_bottom = 203.0
