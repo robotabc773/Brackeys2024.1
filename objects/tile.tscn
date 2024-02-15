@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bawse0x2a8v0b"]
 
-[ext_resource type="Texture2D" uid="uid://6pbgru47ympg" path="res://sprites/tile_empty.tres" id="1_3daci"]
+[ext_resource type="Texture2D" uid="uid://yfy6otlugri0" path="res://sprites/tile_light.tres" id="1_f706d"]
 [ext_resource type="Script" path="res://scripts/tile.gd" id="2_1x3sg"]
 
 [node name="Tile" type="TextureRect"]
@@ -8,7 +8,7 @@ offset_right = 64.0
 offset_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("1_3daci")
+texture = ExtResource("1_f706d")
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("2_1x3sg")

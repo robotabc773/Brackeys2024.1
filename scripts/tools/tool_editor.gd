@@ -6,7 +6,9 @@ func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 
 
 ## Apply the tool to the grid, returning the relevant [enum Tools.Result]
-func apply(grid : Grid, path : Array[Vector2i]) -> Result:
+func apply(grid : Grid, path : Array[Vector2i], preview := false) -> bool:
 	for pos : Vector2i in path:
 		grid.set_state(pos, Tile.invert(grid.get_state(pos)))
-	return Result.SUCCESS
+		if preview:
+			grid.set_highlight(pos, Tile.Highlight.GREEN)
+	return true

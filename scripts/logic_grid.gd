@@ -97,13 +97,14 @@ func _process(_delta : float) -> void:
 	# Update tool preview
 	if _tool_in_progress:
 		var preview_grid := _tool_initial_grid.copy()
-		var result := current_tool.apply(preview_grid, _tool_path)
-		if result != Tool.Result.FAILURE:
+		var success := current_tool.apply(preview_grid, _tool_path, true)
+		if success:
 			_display_grid = preview_grid
 		
 	# Actually display the states in _display_grid
 	for i in _tiles.size():
 		_tiles[i].state = _display_grid.get_state(_display_grid.index_to_pos(i))
+		_tiles[i].highlight = _display_grid.get_highlight(_display_grid.index_to_pos(i))
 
 
 # Resizes/creates the grid
@@ -157,8 +158,8 @@ func _end_tool() -> void:
 		return
 		
 	var tool_final_grid := _tool_initial_grid.copy()
-	var result := current_tool.apply(tool_final_grid, _tool_path)
-	if result == Tool.Result.SUCCESS:
+	var success := current_tool.apply(tool_final_grid, _tool_path)
+	if success:
 		_display_grid = tool_final_grid
 		_undo_history.append(UndoState.new(_tool_initial_grid))
 	else:

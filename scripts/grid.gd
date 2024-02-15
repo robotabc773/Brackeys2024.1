@@ -9,14 +9,19 @@ var num_cols : int
 
 # Internal array of _states, should not be accessed directly
 var _states : Array[Tile.State]
-
+# Internal array of highlights, should not be accessed directly
+var _highlights : Array[Tile.Highlight]
 
 # Constructor, initializes members
-func _init(r : int, c : int, s : Array[Tile.State]) -> void:
+func _init(r : int, c : int, s : Array[Tile.State], h : Array[Tile.Highlight] = []) -> void:
 	assert(r * c == s.size(), "Grid improperly initialized")
 	num_rows = r
 	num_cols = c
 	_states = s
+	_highlights = h
+	if not _highlights:
+		_highlights.resize(s.size())
+		_highlights.fill(Tile.Highlight.NONE)
 
 
 ## Turn an index in the _states array into a position on the grid
@@ -24,21 +29,29 @@ func index_to_pos(i : int) -> Vector2i:
 	@warning_ignore("integer_division")
 	return Vector2i(i % num_cols, i / num_cols)
 
+## Turn a pos into a tile index, should rarely be used outside this class
+func pos_to_index(pos : Vector2i) -> int:
+	return pos.y * num_cols + pos.x
 
 ## Returns true iff the given position is inside the grid
 func valid_pos(pos : Vector2i) -> bool:
 	return pos.y >= 0 and pos.y <= num_rows - 1 and pos.x >= 0 and pos.x <= num_cols - 1
 
-
 ## Gets the state at a given position
 func get_state(pos : Vector2i) -> Tile.State:
-	return _states[pos.y * num_cols + pos.x]
-
+	return _states[pos_to_index(pos)]
 
 ## Sets the state at a given position
 func set_state(pos : Vector2i, state : Tile.State) -> void:
-	_states[pos.y * num_cols + pos.x] = state
+	_states[pos_to_index(pos)] = state
 
+## Gets the highlight at a given position
+func get_highlight(pos : Vector2i) -> Tile.Highlight:
+	return _highlights[pos_to_index(pos)]
+
+## Sets the highlight at a given position
+func set_highlight(pos : Vector2i, highlight : Tile.Highlight) -> void:
+	_highlights[pos_to_index(pos)] = highlight
 
 ## Returns a copy of the grid
 func copy() -> Grid:
