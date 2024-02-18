@@ -46,6 +46,8 @@ size_flags_horizontal = 3
 [node name="LogicGrid" type="GridContainer" parent="VBoxContainer/MarginContainer/LogicGridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/h_separation = -1
+theme_override_constants/v_separation = -1
 script = ExtResource("2_e0wfj")
 
 [node name="StampSelect" type="HBoxContainer" parent="VBoxContainer"]
