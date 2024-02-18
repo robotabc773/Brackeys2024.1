@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cykf831bv2p67"]
+[gd_scene load_steps=3 format=3 uid="uid://cykf831bv2p67"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_spu3b"]
+[ext_resource type="Texture2D" uid="uid://ckm1tnqjmlmys" path="res://sprites/background.png" id="2_fw6y5"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -51,6 +52,11 @@ text = "Exit"
 [node name="Credits" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Credits"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(640, 360)
+texture = ExtResource("2_fw6y5")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="MarginContainer/VBoxContainer" method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Exit" to="MarginContainer/VBoxContainer" method="_on_exit_pressed"]

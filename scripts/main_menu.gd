@@ -7,9 +7,9 @@ func _ready():
 	sfxPlayer.stream = sfx
 
 
-func _on_play_pressed() -> void:
-	sfxPlayer.play()
-	get_tree().change_scene_to_file("res://scenes/level.tscn")
+func _on_play_pressed():
+  sfxPlayer.play()
+	get_tree().change_scene_to_file("res://scenes/transition-ani.tscn")
 
 
 
