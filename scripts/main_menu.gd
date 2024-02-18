@@ -8,7 +8,7 @@ func _ready():
 
 
 func _on_play_pressed():
-  sfxPlayer.play()
+	sfxPlayer.play()
 	get_tree().change_scene_to_file("res://scenes/transition-ani.tscn")
 
 
