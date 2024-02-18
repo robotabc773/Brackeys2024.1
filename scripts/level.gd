@@ -5,9 +5,11 @@ extends RefCounted
 var initial_grid : Grid
 var final_grid : Grid
 var possible_tools : Array[Tool]
+var name : String
 
 
-func _init(tools : Array[Tool], init_grid : Grid) -> void:
+func _init(n : String, tools : Array[Tool], init_grid : Grid) -> void:
+	name = n
 	initial_grid = init_grid.copy()
 	possible_tools = tools
 	

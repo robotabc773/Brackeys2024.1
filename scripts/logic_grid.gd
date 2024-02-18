@@ -115,9 +115,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var key_event : InputEventKey = event
 	if key_event.pressed:
 		match key_event.keycode:
-			KEY_R:
+			KEY_RIGHT:
 				current_tool.rotate()
-			KEY_Q:
+			KEY_LEFT:
 				current_tool.rotate(true)
 
 # Called every frame

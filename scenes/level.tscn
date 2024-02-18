@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://do104jpe4rmyq"]
+[gd_scene load_steps=4 format=3 uid="uid://do104jpe4rmyq"]
 
 [ext_resource type="Script" path="res://scripts/level_loader.gd" id="1_6o8tb"]
 [ext_resource type="Script" path="res://scripts/logic_grid.gd" id="2_e0wfj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g5ddf"]
+font_size = 50
 
 [node name="Level" type="Control"]
 layout_mode = 3
@@ -14,12 +17,24 @@ script = ExtResource("1_6o8tb")
 
 [node name="LogicGridContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LogicGrid" type="GridContainer" parent="LogicGridContainer"]
 layout_mode = 2
 script = ExtResource("2_e0wfj")
+
+[node name="LevelTitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Level Name"
+label_settings = SubResource("LabelSettings_g5ddf")
+horizontal_alignment = 1
+vertical_alignment = 1
