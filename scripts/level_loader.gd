@@ -10,7 +10,7 @@ var levels : Array[Level] = [
 	#Level.new([], Grid.from_json('')),
 	Level.new([stamp_dot], Grid.from_json('{"num_cols":3,"num_rows":3,"states":[2,2,2,2,0,2,2,2,2]}')),
 	Level.new([stamp_dot], Grid.from_json('{"num_cols":4,"num_rows":3,"states":[2,2,2,2,2,0,0,2,2,2,2,2]}')),
-	Level.new([stamp_pair], Grid.from_json('{"num_cols":8,"num_rows":4,"states":[2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2]}')),
+	Level.new([stamp_pair], Grid.from_json('{"num_cols":9,"num_rows":4,"states":[2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2]}')),
 	Level.new([stamp_pair], Grid.from_json('{"num_cols":8,"num_rows":6,"states":[2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,0,0,2,0,2,2,2,0,2,0,0,0,0,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2]}')),
 	Level.new([stamp_pair], Grid.from_json('{"num_cols":6,"num_rows":6,"states":[2,2,2,2,2,2,2,0,0,0,0,2,2,2,0,2,0,2,2,0,0,0,0,2,2,2,0,2,0,2,2,2,2,2,2,2]}')),
 	Level.new([stamp_T, stamp_J], Grid.from_json('{"num_cols":4,"num_rows":4,"states":[0,0,0,0,2,0,2,0,2,0,0,0,0,0,0,2]}')),
