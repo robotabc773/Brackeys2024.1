@@ -1,7 +1,5 @@
 extends AspectRatioContainer
 
-
-const LogicGrid = preload("res://scripts/logic_grid.gd")
 @onready var grid : LogicGrid = $Grid
 
 
