@@ -6,12 +6,13 @@ extends Control
 const tool_test = preload("res://scripts/tools/tool_test.gd")
 const tool_a = preload("res://scripts/tools/tool_a.gd")
 const tool_b = preload("res://scripts/tools/tool_b.gd")
+const tool_stamp = preload("res://scripts/tools/tool_stamp.gd")
 
 func _on_tool_1_pressed():
-	logic_grid.current_tool = tool_a.new()
+	logic_grid.current_tool = tool_stamp.new([Vector2i(0, 0)])
 
 func _on_tool_2_pressed():
-	logic_grid.current_tool = tool_b.new()
+	logic_grid.current_tool = tool_stamp.new([Vector2i(0, 0), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, 1)])
 	
 func _on_tool_3_pressed():
-	logic_grid.current_tool = tool_test.new()
+	logic_grid.current_tool = tool_stamp.new([Vector2i(0, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 1)])

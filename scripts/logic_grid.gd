@@ -48,6 +48,7 @@ func _ready() -> void:
 	resize()
 	# Save the initial state as the earliest state to undo to
 	_undo_history = [UndoState.new(_display_grid)]
+	_tool_initial_grid = _display_grid.copy()
 
 
 # Adds a position to the tool path, backtracking if we've already visited it
@@ -74,6 +75,8 @@ func _tile_mouse_entered(pos : Vector2i) -> void:
 			_add_pos_to_tool_path(old_pos)
 		_add_pos_to_tool_path(pos)
 	_hovered_tile = pos
+	if current_tool.one_click:
+		_tool_path = [_hovered_tile]
 
 
 # Handles mouse input for starting and finishing tools
@@ -93,10 +96,21 @@ func _gui_input(event : InputEvent) -> void:
 		_undo()
 
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not event is InputEventKey:
+		return
+	var key_event : InputEventKey = event
+	if key_event.pressed:
+		match key_event.keycode:
+			KEY_R:
+				current_tool.rotate()
+			KEY_Q:
+				current_tool.rotate(true)
+
 # Called every frame
 func _process(_delta : float) -> void:
 	# Update tool preview
-	if _tool_in_progress:
+	if _tool_in_progress or current_tool.one_click:
 		var preview_grid := _tool_initial_grid.copy()
 		var success := current_tool.apply(preview_grid, _tool_path, true)
 		if success:
@@ -146,6 +160,11 @@ func resize() -> void:
 
 # Start the current tool
 func _start_tool() -> void:
+	if current_tool.one_click:
+		_tool_in_progress = true
+		_end_tool()
+		return
+	
 	if not current_tool.valid_start_pos(_display_grid, _hovered_tile):
 		return
 	_tool_in_progress = true
@@ -162,7 +181,8 @@ func _end_tool() -> void:
 	var success := current_tool.apply(tool_final_grid, _tool_path)
 	if success:
 		_display_grid = tool_final_grid
-		_undo_history.append(UndoState.new(_tool_initial_grid))
+		_undo_history.append(UndoState.new(_tool_initial_grid.copy()))
+		_tool_initial_grid = _display_grid.copy()
 	else:
 		_display_grid = _tool_initial_grid
 		
@@ -171,9 +191,8 @@ func _end_tool() -> void:
 
 # Cancel the current tool, always discarding the current results
 func cancel_tool() -> void:
-	if not _tool_in_progress:
-		return
 	_display_grid = _tool_initial_grid
+	_tool_path = [_hovered_tile]
 	_tool_in_progress = false
 
 
@@ -200,5 +219,4 @@ func _undo() -> void:
 	
 	# Restore the state
 	_display_grid = state.grid
-
-
+	_tool_initial_grid = _display_grid.copy()

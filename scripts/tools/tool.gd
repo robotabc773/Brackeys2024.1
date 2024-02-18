@@ -2,6 +2,9 @@ class_name Tool
 extends Resource
 ## Base class for a tool, shouldn't be used directly
 
+## Whether this tool just takes one click instead of click and release
+var one_click := false
+
 
 ## Should return true iff the given position is valid to start the tool at
 func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
@@ -16,3 +19,8 @@ func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 func apply(_grid : Grid, _path : Array[Vector2i], preview := false) -> bool:
 	assert(false, "Unimplemented")
 	return false
+
+
+## Optionally rotate the tool
+func rotate(ccw := false) -> void:
+	return
