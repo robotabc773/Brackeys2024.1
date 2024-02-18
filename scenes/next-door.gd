@@ -1,7 +1,7 @@
 extends Node2D
 var timer = 0
-@export var time_to_move = 2.2
-@export var speed = 1.25
+@export var time_to_move = 1.7
+@export var speed = 1.75
 
 @export var level = "res://scenes/level.tscn"
 

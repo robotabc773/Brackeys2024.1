@@ -19,7 +19,7 @@ var stamp_empty_3 : Tool = tool_stamp.new([Vector2i(-1, -1), Vector2i(-1, 0), Ve
 var stamp_empty_4 : Tool = tool_stamp.new([Vector2i(-1, -1), Vector2i(-1, 0), Vector2i(-1, 1), Vector2i(-1, 2), Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, -1), Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(2, -1), Vector2i(2, 1), Vector2i(2, 2)])
 var stamp_morse : Tool = tool_stamp.new([Vector2i(0, 0), Vector2i(2, 0), Vector2i(3, 0)])
 
-@export var transition = "res://scenes/transition-ani.tscn"
+var transition = "res://scenes/transition-ani.tscn"
 
 var levels : Array[Level] = [
 	#Level.new("", [], Grid.from_json('')),
