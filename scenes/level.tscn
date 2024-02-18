@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://8886tl48uvqr"]
+[gd_scene load_steps=6 format=3 uid="uid://8886tl48uvqr"]
 
 [ext_resource type="Script" path="res://scripts/level_loader.gd" id="1_6o8tb"]
 [ext_resource type="Script" path="res://scripts/logic_grid.gd" id="2_e0wfj"]
 [ext_resource type="Script" path="res://scripts/stamp_select.gd" id="3_7b3wp"]
+[ext_resource type="AudioStream" uid="uid://bp0wgkda5ri78" path="res://sound/bgm/lofi01.wav" id="4_ije01"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g5ddf"]
 font_size = 40
@@ -53,3 +54,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
 script = ExtResource("3_7b3wp")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ije01")
+autoplay = true
