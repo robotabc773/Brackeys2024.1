@@ -22,7 +22,7 @@ offset_bottom = 179.0
 grow_horizontal = 2
 theme_override_font_sizes/normal_font_size = 60
 bbcode_enabled = true
-text = " [center]Name of Our Game[/center]"
+text = " [center]Doors[/center]"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
