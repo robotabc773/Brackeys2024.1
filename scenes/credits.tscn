@@ -17,11 +17,11 @@ offset_left = 205.0
 offset_top = 162.0
 offset_right = 944.0
 offset_bottom = 573.0
-theme_override_font_sizes/normal_font_size = 30
-text = "Code: 
-Level Design:
-Art: 
-Audio:"
+theme_override_font_sizes/normal_font_size = 35
+text = "Code: Sebastian, Richard
+Level Design: John, Grace
+Art: Sebastian, Grace
+Audio: Wei Wei"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
