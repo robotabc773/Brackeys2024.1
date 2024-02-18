@@ -6,11 +6,11 @@ func _ready() -> void:
 
 func hidePauseMenu() -> void:
 	pauseMenu.hide()
-	Engine.time_scale = 1
+	#Engine.time_scale = 1
 	
 func showPauseMenu() -> void:
 	pauseMenu.show()
-	Engine.time_scale = 0
+	#Engine.time_scale = 0
 
 # show pause menu when the pause button is pressed
 func _on_pause_pressed() -> void:
