@@ -73,3 +73,22 @@ func neighbors8(pos : Vector2i) -> Array[Vector2i]:
 ## Returns all valid positions from the 4 orthogonal neighbors of pos
 func neighbors4(pos : Vector2i) -> Array[Vector2i]:
 	return neighbors(pos, [Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1), Vector2i(1, 0)])
+
+
+## Returns a string representing the current grid as JSON
+func to_json() -> String:
+	var data := {
+		states = _states,
+		num_rows = num_rows,
+		num_cols = num_cols,
+	}
+	return JSON.stringify(data)
+
+static func from_json(json : String) -> Grid:
+	var data : Dictionary = JSON.parse_string(json)
+	var int_states : Array = data["states"]
+	var states : Array[Tile.State] = []
+	states.assign(int_states)
+	var rows : int = data["num_rows"]
+	var cols : int = data["num_cols"]
+	return new(rows, cols, states)

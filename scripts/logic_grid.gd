@@ -1,3 +1,4 @@
+class_name LogicGrid
 extends GridContainer
 
 # Tile object that will be instantiated across the grid
@@ -9,14 +10,14 @@ const _tile_template = preload("res://objects/tile.tscn")
 		if value < 1:
 			return
 		num_rows = value
-		resize()
+		_resize()
 ## Number of columns in the grid
 @export_range(0, 20) var num_cols : int = 4:
 	set(value):
 		if value < 1:
 			return
 		num_cols = value
-		resize()
+		_resize()
 
 ## Current tool instance
 var current_tool : Tool = preload("res://scripts/tools/tool_test.gd").new():
@@ -44,9 +45,23 @@ var _undo_history : Array[UndoState]
 # Called on start
 func _ready() -> void:
 	# Ensure the grid exists
-	resize()
+	_resize()
 	# Save the initial state as the earliest state to undo to
 	_undo_history = [UndoState.new(_display_grid)]
+	_tool_initial_grid = _display_grid.copy()
+
+
+## Set the grid the given grid
+func set_grid(grid : Grid) -> void:
+	cancel_tool()
+	num_rows = grid.num_rows
+	num_cols = grid.num_cols
+	_display_grid = grid.copy()
+	_tool_initial_grid = _display_grid.copy()
+	
+	
+func get_grid() -> Grid:
+	return _tool_initial_grid
 
 
 # Adds a position to the tool path, backtracking if we've already visited it
@@ -73,6 +88,8 @@ func _tile_mouse_entered(pos : Vector2i) -> void:
 			_add_pos_to_tool_path(old_pos)
 		_add_pos_to_tool_path(pos)
 	_hovered_tile = pos
+	if current_tool.one_click:
+		_tool_path = [_hovered_tile]
 
 
 # Handles mouse input for starting and finishing tools
@@ -92,10 +109,21 @@ func _gui_input(event : InputEvent) -> void:
 		_undo()
 
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not event is InputEventKey:
+		return
+	var key_event : InputEventKey = event
+	if key_event.pressed:
+		match key_event.keycode:
+			KEY_RIGHT:
+				current_tool.rotate()
+			KEY_LEFT:
+				current_tool.rotate(true)
+
 # Called every frame
 func _process(_delta : float) -> void:
 	# Update tool preview
-	if _tool_in_progress:
+	if _tool_in_progress or current_tool.one_click:
 		var preview_grid := _tool_initial_grid.copy()
 		var success := current_tool.apply(preview_grid, _tool_path, true)
 		if success:
@@ -108,7 +136,7 @@ func _process(_delta : float) -> void:
 
 
 # Resizes/creates the grid
-func resize() -> void:
+func _resize() -> void:
 	columns = num_cols
 	
 	# Create new _display_grid
@@ -145,6 +173,11 @@ func resize() -> void:
 
 # Start the current tool
 func _start_tool() -> void:
+	if current_tool.one_click:
+		_tool_in_progress = true
+		_end_tool()
+		return
+	
 	if not current_tool.valid_start_pos(_display_grid, _hovered_tile):
 		return
 	_tool_in_progress = true
@@ -161,7 +194,8 @@ func _end_tool() -> void:
 	var success := current_tool.apply(tool_final_grid, _tool_path)
 	if success:
 		_display_grid = tool_final_grid
-		_undo_history.append(UndoState.new(_tool_initial_grid))
+		_undo_history.append(UndoState.new(_tool_initial_grid.copy()))
+		_tool_initial_grid = _display_grid.copy()
 	else:
 		_display_grid = _tool_initial_grid
 		
@@ -170,9 +204,8 @@ func _end_tool() -> void:
 
 # Cancel the current tool, always discarding the current results
 func cancel_tool() -> void:
-	if not _tool_in_progress:
-		return
 	_display_grid = _tool_initial_grid
+	_tool_path = [_hovered_tile]
 	_tool_in_progress = false
 
 
@@ -199,5 +232,4 @@ func _undo() -> void:
 	
 	# Restore the state
 	_display_grid = state.grid
-
-
+	_tool_initial_grid = _display_grid.copy()
