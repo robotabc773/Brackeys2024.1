@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 LevelNum="*res://level_num.gd"
+Music="*res://scenes/autoloads/music.tscn"
 
 [debug]
 

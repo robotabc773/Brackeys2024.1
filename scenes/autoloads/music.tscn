@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bei4gcg1xrcf4"]
+
+[ext_resource type="AudioStream" uid="uid://bh467mnkdrx6p" path="res://sound/bgm/lofi01.wav" id="1_tg5en"]
+
+[node name="Music" type="Node"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_tg5en")
+autoplay = true
