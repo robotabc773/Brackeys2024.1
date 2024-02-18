@@ -32,9 +32,4 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _copy_data() -> void:
-	var data := {
-		states = grid._display_grid._states,
-		num_rows = grid._display_grid.num_rows,
-		num_cols = grid._display_grid.num_cols,
-	}
-	DisplayServer.clipboard_set(JSON.stringify(data))
+	DisplayServer.clipboard_set(grid._display_grid.to_json())

@@ -1,5 +1,5 @@
 class_name Tool
-extends Resource
+extends RefCounted
 ## Base class for a tool, shouldn't be used directly
 
 ## Whether this tool just takes one click instead of click and release

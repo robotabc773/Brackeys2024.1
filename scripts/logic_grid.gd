@@ -10,14 +10,14 @@ const _tile_template = preload("res://objects/tile.tscn")
 		if value < 1:
 			return
 		num_rows = value
-		resize()
+		_resize()
 ## Number of columns in the grid
 @export_range(0, 20) var num_cols : int = 4:
 	set(value):
 		if value < 1:
 			return
 		num_cols = value
-		resize()
+		_resize()
 
 ## Current tool instance
 var current_tool : Tool = preload("res://scripts/tools/tool_test.gd").new():
@@ -45,10 +45,23 @@ var _undo_history : Array[UndoState]
 # Called on start
 func _ready() -> void:
 	# Ensure the grid exists
-	resize()
+	_resize()
 	# Save the initial state as the earliest state to undo to
 	_undo_history = [UndoState.new(_display_grid)]
 	_tool_initial_grid = _display_grid.copy()
+
+
+## Set the grid the given grid
+func set_grid(grid : Grid) -> void:
+	cancel_tool()
+	num_rows = grid.num_rows
+	num_cols = grid.num_cols
+	_display_grid = grid.copy()
+	_tool_initial_grid = _display_grid.copy()
+	
+	
+func get_grid() -> Grid:
+	return _tool_initial_grid
 
 
 # Adds a position to the tool path, backtracking if we've already visited it
@@ -123,7 +136,7 @@ func _process(_delta : float) -> void:
 
 
 # Resizes/creates the grid
-func resize() -> void:
+func _resize() -> void:
 	columns = num_cols
 	
 	# Create new _display_grid
