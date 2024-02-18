@@ -19,6 +19,7 @@ var levels : Array[Level] = [
 var current_level : int
 
 @onready var logic_grid : LogicGrid = $LogicGridContainer/LogicGrid
+@onready var logic_grid_container : AspectRatioContainer = $LogicGridContainer
 # TODO: tool selection existing
 #@onready var tool_selection : ToolSelection = $ToolSelection
 
@@ -30,6 +31,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	var level := levels[current_level]
+
 	if logic_grid.get_grid()._states == level.final_grid._states:
 		finish_level()
 
@@ -41,6 +43,8 @@ func load_level(id : int) -> void:
 	#tool_selection.set_tools(level.possible_tools)
 	# TODO: this is temporary
 	logic_grid.current_tool = level.possible_tools[0]
+	
+	logic_grid_container.ratio = float(level.initial_grid.num_cols) / (level.initial_grid.num_rows)
 
 
 func finish_level() -> void:

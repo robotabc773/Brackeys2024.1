@@ -55,4 +55,3 @@ func rotate(ccw := false) -> void:
 	else:
 		_rotation += 1
 	_rotation %= 4
-	print(_rotation)
