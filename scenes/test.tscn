@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdlowv8hmrxtd"]
+[gd_scene load_steps=2 format=3 uid="uid://cdlowv8hmrxtd"]
 
-[ext_resource type="Theme" uid="uid://bas1oqw84cj4o" path="res://grid.tres" id="1_w855q"]
 [ext_resource type="Script" path="res://scripts/logic_grid.gd" id="2_ncidm"]
 
 [node name="Control" type="PanelContainer"]
@@ -12,7 +11,6 @@ grow_vertical = 2
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
-theme = ExtResource("1_w855q")
 columns = 2
 script = ExtResource("2_ncidm")
 num_rows = 20
