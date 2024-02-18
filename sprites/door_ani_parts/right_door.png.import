@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmg8dsxukr7u4"
-path="res://.godot/imported/outside_edge.png-dbbcccef02b4137ed60c32dabf7716e9.ctex"
+uid="uid://cpjokiaab6pbq"
+path="res://.godot/imported/right_door.png-e8b52f43f317ceb84aa9034876bd1d6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/tiles/outside_edge.png"
-dest_files=["res://.godot/imported/outside_edge.png-dbbcccef02b4137ed60c32dabf7716e9.ctex"]
+source_file="res://sprites/door_ani_parts/right_door.png"
+dest_files=["res://.godot/imported/right_door.png-e8b52f43f317ceb84aa9034876bd1d6e.ctex"]
 
 [params]
 

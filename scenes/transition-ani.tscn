@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://bu65oytt1w3ic"]
+
+[ext_resource type="Script" path="res://scenes/old-right.gd" id="1_2jkt7"]
+[ext_resource type="Texture2D" uid="uid://ckm1tnqjmlmys" path="res://sprites/background.png" id="1_a4kxd"]
+[ext_resource type="Texture2D" uid="uid://cpjokiaab6pbq" path="res://sprites/door_ani_parts/right_door.png" id="1_b551w"]
+[ext_resource type="Script" path="res://scenes/next-door.gd" id="4_sege5"]
+[ext_resource type="Texture2D" uid="uid://oio4bf8ckj1g" path="res://sprites/door_ani_parts/left_door.png" id="4_tqgoi"]
+[ext_resource type="Texture2D" uid="uid://dfm14qbxcjv4" path="res://sprites/door_ani_parts/frame.png" id="5_hcx63"]
+
+[node name="Transition-ani" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_2jkt7")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Node2D"]
+position = Vector2(656, 360)
+scale = Vector2(13.465, 13.465)
+texture = ExtResource("1_b551w")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+z_index = -5
+position = Vector2(640, 360)
+texture = ExtResource("1_a4kxd")
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2(638, 360.575)
+script = ExtResource("4_sege5")
+
+[node name="Node2D" type="Node2D" parent="Node2D2"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D2/Node2D"]
+z_index = -7
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("1_b551w")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Node2D2/Node2D"]
+z_index = -8
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("1_a4kxd")
+
+[node name="Node2D2" type="Node2D" parent="Node2D2"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D2/Node2D2"]
+z_index = -9
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("4_tqgoi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D2"]
+z_index = -6
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_hcx63")

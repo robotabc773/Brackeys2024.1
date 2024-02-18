@@ -19,6 +19,8 @@ var stamp_empty_3 : Tool = tool_stamp.new([Vector2i(-1, -1), Vector2i(-1, 0), Ve
 var stamp_empty_4 : Tool = tool_stamp.new([Vector2i(-1, -1), Vector2i(-1, 0), Vector2i(-1, 1), Vector2i(-1, 2), Vector2i(0, -1), Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, -1), Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(2, -1), Vector2i(2, 1), Vector2i(2, 2)])
 var stamp_morse : Tool = tool_stamp.new([Vector2i(0, 0), Vector2i(2, 0), Vector2i(3, 0)])
 
+@export var transition = "res://scenes/transition-ani.tscn"
+
 var levels : Array[Level] = [
 	#Level.new("", [], Grid.from_json('')),
 	Level.new("Left Click", [stamp_dot], Grid.from_json('{"num_cols":3,"num_rows":3,"states":[2,2,2,2,0,2,2,2,2]}')),
@@ -53,7 +55,7 @@ var current_level : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	load_level(0)
+	load_level(LevelNum.num)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -87,5 +89,7 @@ func load_level(id : int) -> void:
 
 
 func finish_level() -> void:
-	if current_level < levels.size() - 1:
-		load_level(current_level + 1)
+	await get_tree().create_timer(0.3).timeout			# just wait a bit to prevent animation starting instantly on clear
+	if LevelNum.num < levels.size() - 1:
+		LevelNum.num += 1
+		get_tree().change_scene_to_file(transition)
