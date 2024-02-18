@@ -16,11 +16,11 @@ func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 ## If returning false should not modify grid
 ## When preview is true, should make illegal modifications for UI purposes
 ## Can also highlight tiles to display information
-func apply(_grid : Grid, _path : Array[Vector2i], preview := false) -> bool:
+func apply(_grid : Grid, _path : Array[Vector2i], _preview := false) -> bool:
 	assert(false, "Unimplemented")
 	return false
 
 
 ## Optionally rotate the tool
-func rotate(ccw := false) -> void:
+func rotate(_ccw := false) -> void:
 	return

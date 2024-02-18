@@ -35,7 +35,7 @@ func valid_start_pos(_grid : Grid, _pos : Vector2i) -> bool:
 ## On apply: flip the tiles
 func apply(grid : Grid, path : Array[Vector2i], preview := false) -> bool:
 	var tiles := grid.neighbors(path[0], _deltas)
-	var valid := tiles.size() == _deltas.size() and tiles.all(func(p : Vector2i): return grid.get_state(p) != Tile.State.BLOCKED)
+	var valid := tiles.size() == _deltas.size() and tiles.all(func(p : Vector2i) -> bool: return grid.get_state(p) != Tile.State.BLOCKED)
 	if preview:
 		for t in tiles:
 			grid.set_highlight(t, Tile.Highlight.GREEN if valid else Tile.Highlight.RED)

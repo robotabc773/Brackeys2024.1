@@ -54,4 +54,4 @@ var state : State = State.LIGHT:
 var highlight : Highlight = Highlight.NONE:
 	set(value):
 		highlight = value
-		modulate = highlight_to_color(highlight)
+		modulate = Tile.highlight_to_color(highlight)
