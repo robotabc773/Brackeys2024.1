@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjm0llcm0qydo"]
+
+[ext_resource type="Texture2D" uid="uid://cnifrbx451wlc" path="res://sprites/tile_dark.tres" id="1_4me24"]
+
+[node name="StampSelectButton" type="TextureRect"]
+size_flags_vertical = 3
+texture = ExtResource("1_4me24")
+stretch_mode = 5
