@@ -1,3 +1,4 @@
+class_name LogicGrid
 extends GridContainer
 
 # Tile object that will be instantiated across the grid

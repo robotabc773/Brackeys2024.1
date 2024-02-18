@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://v37g0nmrh1ij"]
+
+[ext_resource type="PackedScene" uid="uid://br6dyud2sumq5" path="res://scenes/pause_menu.tscn" id="1_n1okg"]
+[ext_resource type="PackedScene" uid="uid://bjxy1s75ej0ep" path="res://scenes/tool_selection.tscn" id="2_hhko0"]
+[ext_resource type="Script" path="res://scripts/logic_grid.gd" id="3_7lr6i"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseMenu" parent="." instance=ExtResource("1_n1okg")]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 9.0
+offset_right = 16.0
+offset_bottom = 9.0
+
+[node name="ToolSelection" parent="." instance=ExtResource("2_hhko0")]
+layout_mode = 1
+offset_left = -16.0
+offset_top = 203.0
+offset_right = -16.0
+offset_bottom = 203.0
+
+[node name="LogicGrid" type="GridContainer" parent="."]
+layout_mode = 2
+offset_left = 315.0
+offset_top = 98.0
+offset_right = 839.0
+offset_bottom = 594.0
+script = ExtResource("3_7lr6i")
+num_rows = 10
+num_cols = 10
