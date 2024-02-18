@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://do104jpe4rmyq"]
+[gd_scene load_steps=6 format=3 uid="uid://8886tl48uvqr"]
 
 [ext_resource type="Script" path="res://scripts/level_loader.gd" id="1_6o8tb"]
 [ext_resource type="Script" path="res://scripts/logic_grid.gd" id="2_e0wfj"]
@@ -19,6 +19,10 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("1_6o8tb")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("4_mxg21")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -54,8 +58,3 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
 script = ExtResource("3_7b3wp")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -5
-position = Vector2(640, 360)
-texture = ExtResource("4_mxg21")

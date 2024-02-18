@@ -30,7 +30,7 @@ var levels : Array[Level] = [
 	Level.new("Flipping", [stamp_pair], Grid.from_json('{"num_cols":6,"num_rows":6,"states":[2,2,2,2,2,2,2,0,0,0,0,2,2,2,0,2,0,2,2,0,0,0,0,2,2,2,0,2,0,2,2,2,2,2,2,2]}')),
 	#Level.new("Multiple stamps!", [stamp_T, stamp_J], Grid.from_json('{"num_cols":4,"num_rows":4,"states":[0,0,0,0,2,0,2,0,2,0,0,0,0,0,0,2]}')),
 	Level.new("Rectangle", [stamp_three], Grid.from_json('{"num_cols":10,"num_rows":5,"states":[2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,2,2,0,2,2,2,2,2,2,0,2,2,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2]}')),
-	Level.new("Cancellation", [stamp_three, stamp_I], Grid.from_json('{"num_cols":9,"num_rows":5,"states":[2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,2,2,0,2,2,2,2,2,0,2,2,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2]}')),
+	Level.new("Those bottom left buttons switch stamps", [stamp_three, stamp_I], Grid.from_json('{"num_cols":9,"num_rows":5,"states":[2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,2,2,0,2,2,2,2,2,0,2,2,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2]}')),
 	Level.new("A=B", [stamp_pair, stamp_three], Grid.from_json('{"num_cols":9,"num_rows":12,"states":[2,2,2,2,2,2,2,2,2,2,0,0,0,2,0,0,0,2,2,0,2,0,2,0,2,0,2,2,0,2,0,2,0,0,0,2,2,0,2,0,2,0,2,0,2,2,0,2,0,0,0,2,0,2,2,0,2,0,2,0,2,0,2,2,0,2,0,0,0,2,0,2,2,0,0,0,2,0,2,0,2,2,0,2,0,2,0,2,0,2,2,0,2,0,2,0,0,0,2,2,2,2,2,2,2,2,2,2]}')),
 	Level.new("Long Distance", [stamp_long_distance, stamp_corners], Grid.from_json('{"num_cols":7,"num_rows":7,"states":[2,2,2,2,2,2,2,2,0,0,2,0,0,2,2,0,0,2,0,0,2,2,2,2,2,2,2,2,2,0,0,2,0,0,2,2,0,0,2,0,0,2,2,2,2,2,2,2,2]}')),
 	Level.new("Short Distance", [stamp_short_distance], Grid.from_json('{"num_cols":10,"num_rows":6,"states":[2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,2,0,2,0,2,2,0,0,0,2,0,0,0,2,2,2,0,0,0,2,0,0,0,0,2,2,0,2,2,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2]}')),
@@ -94,3 +94,5 @@ func finish_level() -> void:
 	if LevelNum.num < levels.size() - 1:
 		LevelNum.num += 1
 		get_tree().change_scene_to_file(transition)
+	else:
+		get_tree().change_scene_to_file("res://scenes/victory.tscn")
